@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-button
+      	routerLink="/preferences">
+        <ion-icon
+        	slot="icon-only"
+        	ios="settings-outline"
+        	md="settings-outline">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Ice Breaker</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" (click)="LoadAnother()">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Ice Breaker</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container" class="ice-breaker">
+    <strong>{{ content }}</strong>
+  </div>
+</ion-content>
