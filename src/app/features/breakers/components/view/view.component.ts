@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { BreakersService } from '@app/features/breakers/breakers.service';
+import * as Breakers from '@app/features/breakers';
 
 @Component({
 	selector: 'app-view',
@@ -9,34 +9,32 @@ import { BreakersService } from '@app/features/breakers/breakers.service';
 })
 export class ViewComponent implements OnInit {
 
-	public content: string = "...";
+	public breaker: Breakers.Model = null;
+	public next: Breakers.Model = null;
 
 	constructor(
-		private Service: BreakersService,
+		private Service: Breakers.Service,
 	) { }
 
 	ngOnInit() {
-		this.GetBreaker();
+		this.watch();
+	}
+
+	private watch(): void {
+		this.Service.newBreaker	
+			.subscribe((b) => {
+				if(!this.next) {
+					this.next = b;
+					this.LoadAnother();
+				} else {
+					this.breaker = b;
+				}
+			});
+		this.LoadAnother();
 	}
 
 	public LoadAnother(): void {
-		this.GetBreaker();
-	}
-
-	public GetBreaker(): void {
-		this.content = "...";
-		this.Service.GetBreaker()
-			.then((b) => {
-				console.info("breaker: ", b);
-				this.content = b.content;
-			})
-			.catch(err => {
-				console.error("error: ", err);
-			});
-	}
-
-	public GoToSettings(): void {
-		
+		this.Service.LoadOne();
 	}
 
 }

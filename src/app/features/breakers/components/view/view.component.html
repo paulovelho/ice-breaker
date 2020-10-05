@@ -15,14 +15,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" (click)="LoadAnother()">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Ice Breaker</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true">
 
   <div id="container" class="ice-breaker">
-    <strong>{{ content }}</strong>
+  	<breaker-card [breaker]="breaker"></breaker-card>
   </div>
 </ion-content>
