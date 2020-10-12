@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import * as Breakers from '@app/features/breakers';
+import { Breaker } from '@app/features/breakers/model';
+import { BreakersService } from '@app/features/breakers/breakers.service';
 
 @Component({
 	selector: 'app-view',
@@ -9,32 +10,53 @@ import * as Breakers from '@app/features/breakers';
 })
 export class ViewComponent implements OnInit {
 
-	public breaker: Breakers.Model = null;
-	public next: Breakers.Model = null;
+	public front: Breaker = null;
+	public back: Breaker = null;
+	public viewBack: boolean = false;
+
+	private lock: boolean = true;
 
 	constructor(
-		private Service: Breakers.Service,
+		private Service: BreakersService,
 	) { }
 
 	ngOnInit() {
+		this.start();
 		this.watch();
+	}
+
+	private start(): void {
+		this.Service.GetBreaker()
+			.then((breaker) => {
+				this.front = breaker;
+				this.lock = false;
+				this.LoadAnother();
+			});
 	}
 
 	private watch(): void {
 		this.Service.newBreaker	
 			.subscribe((b) => {
-				if(!this.next) {
-					this.next = b;
-					this.LoadAnother();
+				console.info("got new: ", b);
+				if(this.viewBack) {
+					this.front = b;
 				} else {
-					this.breaker = b;
+					this.back = b;
 				}
+				this.lock = false;
 			});
-		this.LoadAnother();
 	}
 
 	public LoadAnother(): void {
 		this.Service.LoadOne();
+	}
+
+	public showNext(): void {
+		console.info("loading another, lock: ", this.lock);
+		if(this.lock) return;
+		this.lock = true;
+		this.viewBack = !this.viewBack;
+		setTimeout(() => this.LoadAnother(), 750);
 	}
 
 }

@@ -4,9 +4,47 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
 
   margin: 0 50px;
+
+	perspective: 1000px;
+
+	.flipper {
+		top: 50%;
+		margin: 100px 0;
+		transform: translateY(-50%);
+		transition: 0.6s;
+		transform-style: preserve-3d;
+
+		position: relative;
+
+
+		/* flip the pane when hovered */
+		&.flip {
+			transform: rotateY(180deg);
+		}
+
+		/* hide back of pane during swap */
+		.front, .back {
+			backface-visibility: hidden;
+
+			position: absolute;
+			left: 0;
+		}
+
+		/* front pane, placed above back */
+		.front {
+			z-index: 2;
+			/* for firefox 31 */
+			transform: rotateY(0deg);
+		}
+		/* back, initially hidden pane */
+		.back {
+			transform: rotateY(180deg);
+		}
+
+	}
+
 }
+
 

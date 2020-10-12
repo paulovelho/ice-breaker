@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 
-import * as Breakers from '@app/features/breakers';
+import { Breaker } from '@app/features/breakers/model';
+import { BreakersService } from '@app/features/breakers/breakers.service';
 
 @Component({
   selector: 'breaker-card',
@@ -9,11 +10,18 @@ import * as Breakers from '@app/features/breakers';
 })
 export class BreakerCardComponent implements OnInit {
 
-	@Input() breaker: Breakers.Model = null;
-	@Input() next: Breakers.Model = null;
+	@Input() breaker: Breaker = null;
+	@Output() nextClick = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(
+		private Service: BreakersService,
+	) { }
 
   ngOnInit() {}
+
+  public next(): void {
+  	console.info("emit next");
+		this.nextClick.emit(true);  	
+  }
 
 }
