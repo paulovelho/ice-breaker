@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Breaker } from '@app/features/breakers/model';
 import { BreakersService } from '@app/features/breakers/breakers.service';
 
 @Component({
@@ -9,34 +10,53 @@ import { BreakersService } from '@app/features/breakers/breakers.service';
 })
 export class ViewComponent implements OnInit {
 
-	public content: string = "...";
+	public front: Breaker = null;
+	public back: Breaker = null;
+	public viewBack: boolean = false;
+
+	private lock: boolean = true;
 
 	constructor(
 		private Service: BreakersService,
 	) { }
 
 	ngOnInit() {
-		this.GetBreaker();
+		this.start();
+		this.watch();
 	}
 
-	public LoadAnother(): void {
-		this.GetBreaker();
-	}
-
-	public GetBreaker(): void {
-		this.content = "...";
+	private start(): void {
 		this.Service.GetBreaker()
-			.then((b) => {
-				console.info("breaker: ", b);
-				this.content = b.content;
-			})
-			.catch(err => {
-				console.error("error: ", err);
+			.then((breaker) => {
+				this.front = breaker;
+				this.lock = false;
+				this.LoadAnother();
 			});
 	}
 
-	public GoToSettings(): void {
-		
+	private watch(): void {
+		this.Service.newBreaker	
+			.subscribe((b) => {
+				console.info("got new: ", b);
+				if(this.viewBack) {
+					this.front = b;
+				} else {
+					this.back = b;
+				}
+				this.lock = false;
+			});
+	}
+
+	public LoadAnother(): void {
+		this.Service.LoadOne();
+	}
+
+	public showNext(): void {
+		console.info("loading another, lock: ", this.lock);
+		if(this.lock) return;
+		this.lock = true;
+		this.viewBack = !this.viewBack;
+		setTimeout(() => this.LoadAnother(), 750);
 	}
 
 }
