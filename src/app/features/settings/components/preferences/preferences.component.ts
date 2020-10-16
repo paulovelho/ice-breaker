@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 
 import { SettingsService } from './../../settings.service';
+import { DataLayerService } from '@app/services/data-layer.service';
 
 @Component({
   selector: 'app-preferences',
@@ -11,15 +12,28 @@ import { SettingsService } from './../../settings.service';
 export class PreferencesComponent implements OnInit {
 
 	private loading;
+	public categories: Array<any> = [];
 
   constructor(
   	private loadingController: LoadingController,
   	private Service: SettingsService,
+  	private DataService: DataLayerService,
   ) { }
 
   ngOnInit() {
-//  	this.showLoading();
+  	this.showLoading().then(() => {
+	  	this.LoadCategories();
+  	});
   }
+
+  private LoadCategories(): void {
+  	this.DataService.GetCategories()
+  		.then((data) => {
+  			console.info("got categories: ", data);
+  			this.loading.dismiss();
+  			this.categories = data;
+  		});
+  };
 	
 	public async showLoading(message?: string) {
 		if(!message) message = "Carregando...";
