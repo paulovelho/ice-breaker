@@ -111,7 +111,7 @@ export class DataLayerService {
 	}
 
 	public InsertBasicData(): Promise<any> {
-		return this.InsertDataForCategory("basic", this.Loader.getBasics());
+		return this.InsertDataForCategory("basics", this.Loader.getBasics());
 	}
 	public InsertCinemaData(): Promise<any> {
 		return this.InsertDataForCategory("cinema", this.Loader.getCinema());
@@ -126,7 +126,7 @@ export class DataLayerService {
 		console.info("inserting: ", name);
 		const basicInsert = data.data
 			.map(b => {
-				return `("${b.id}", "${b.content}", "basic", 0)`;
+				return `("${b.id}", "${b.content}", "${name}", 0)`;
 			});
 		let query = this.getInsertQuery() + basicInsert.join(',');
 		await this.sqlService.executeSQL(query)
@@ -146,13 +146,22 @@ export class DataLayerService {
 		return true;
 	}
 
+	public GetValidCategories(): Promise<Array<string>> {
+		const query = "SELECT name FROM categories WHERE active = 1";
+		return this.sqlService.selectSQL(query)
+			.then(data => {
+				let categories: Array<any> = Object.values(data);
+				return categories.map(c => c["name"]);
+			});		
+	}
 
-	public GetRandomBreaker(): Promise<any> {
+	public async GetRandomBreaker(): Promise<any> {
 		const random = Math.random();
 		// const query = `SELECT * FROM breakers 
 		// 	LIMIT 1 
 		// 	OFFSET ABS(${random}) % MAX((SELECT COUNT(*) FROM breakers), 1)`;
-		const query = "SELECT * FROM breakers";
+		const cats = await this.GetValidCategories();
+		const query = `SELECT * FROM breakers WHERE category IN ( "${cats.join('", "')}" )`;
 		return this.sqlService.selectSQL(query)
 			.then(data => {
 				return data[Math.floor(Math.random() * data.length)];
@@ -165,6 +174,11 @@ export class DataLayerService {
 			.then(data => {
 				return Object.values(data);
 			});
+	}
+
+	public updateCategoryActive(name: string, active: boolean): Promise<any> {
+		const query = `UPDATE categories SET active = ${active} WHERE name = "${name}"`;
+		return this.sqlService.executeSQL(query);
 	}
 
 }

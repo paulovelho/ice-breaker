@@ -14,5 +14,6 @@ export const data = {
 "Cinema ou teatro?",
 "Quem merecia um Oscar que ainda não ganhou?",
 "Qual ator/atriz te faz ir ao cinema?",
+"Qual sua opinião impopular sobre cinema?",
 ]
 }
