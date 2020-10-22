@@ -1,23 +1,35 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="primary">
-      <ion-button
-      	routerLink="/preferences">
-        <ion-icon
-        	slot="icon-only"
-        	ios="settings-outline"
-        	md="settings-outline">
-        </ion-icon>
-      </ion-button>
-    </ion-buttons>
+	<ion-toolbar>
+		<ion-buttons slot="primary">
+			<ion-button
+				routerLink="/preferences">
+				<ion-icon
+					slot="icon-only"
+					ios="settings-outline"
+					md="settings-outline">
+				</ion-icon>
+			</ion-button>
+		</ion-buttons>
 
-    <ion-title>Ice Breaker</ion-title>
-  </ion-toolbar>
+		<ion-title>Ice Breaker</ion-title>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-  <div id="container" class="ice-breaker">
-  	<breaker-card [breaker]="breaker"></breaker-card>
-  </div>
+	<div id="container" class="ice-breaker">
+		<div class="flipper" [ngClass]="{'flip': viewBack}">
+			<breaker-card 
+				class="front"
+				[breaker]="front"
+				(nextClick)="showNext($event)"
+				></breaker-card>
+			<breaker-card 
+				class="back"
+				[breaker]="back"
+				(nextClick)="showNext($event)"
+				></breaker-card>
+		</div>
+
+	</div>
 </ion-content>
