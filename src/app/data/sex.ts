@@ -1,6 +1,6 @@
 export const data = {
 	version: 1.0,
-	name: "cinema",
+	name: "sex",
 	data: [
 "Qual o lugar mais inusitado que você já transou?",
 "Qual sua categoria favorita de pornografia?",

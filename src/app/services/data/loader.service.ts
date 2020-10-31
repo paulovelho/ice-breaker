@@ -6,6 +6,8 @@ import { data as basics } from '@app/data/basics';
 import { data as cinema } from '@app/data/cinema';
 import { data as paulovelho } from '@app/data/paulovelho';
 import { data as sex } from '@app/data/sex';
+import { data as openers } from '@app/data/openers';
+import { data as travel } from '@app/data/travel';
 
 @Injectable({
 	providedIn: 'root'
@@ -45,6 +47,12 @@ export class LoaderService {
 	}
 	getSex(): any {
 		return this.returnData(sex);
+	}
+	getOpeners(): any {
+		return this.returnData(openers);
+	}
+	getTravel(): any {
+		return this.returnData(travel);
 	}
 
 

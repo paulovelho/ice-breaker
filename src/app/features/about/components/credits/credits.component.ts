@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { environment } from '@app/../environments/environment';
+
+
 @Component({
   selector: 'app-credits',
   templateUrl: './credits.component.html',
@@ -7,8 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreditsComponent implements OnInit {
 
+	public version: string = "...";
+	public db_version: string = "...";
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  	this.version = environment.version.toString();
+  	this.db_version = environment.data_version.toString();
+  }
 
 }

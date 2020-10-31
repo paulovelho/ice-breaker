@@ -11,18 +11,17 @@
 			</ion-button>
 		</ion-buttons>
 
-		<ion-title>Ice Breaker - Configurações</ion-title>
+		<ion-title>Gotta Ask - Configurações</ion-title>
 	</ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-	<br/><br/>
 	<section>
 		<header>Categorias</header>
 		<ion-list>
 			<ion-item *ngFor="let c of categories">
-				<ion-label>{{c.name}} - {{ c.active }}</ion-label>
+				<ion-label>{{c.name}}</ion-label>
 				<ion-checkbox 
 					slot="end"
 					name="active-{{c.name}}"
@@ -33,12 +32,20 @@
 		</ion-list>
 	</section>
 
-	<br/><br/>
 	<section>
 		<header>Limpar Dados</header>
 		<ion-button color="danger" expand="block" (click)="reset()">
 			Apagar todos os dados salvos</ion-button>
 	</section>
+
+	<br/>
+	<hr/>
+	<section>
+		<header>Créditos</header>
+		<ion-button color="primary" expand="block" [routerLink]="['/about']">
+			Créditos</ion-button>
+	</section>
+
 
 </ion-content>
 

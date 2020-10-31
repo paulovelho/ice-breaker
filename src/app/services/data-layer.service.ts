@@ -122,6 +122,12 @@ export class DataLayerService {
 	public InsertSexData(): Promise<any> {
 		return this.InsertDataForCategory("sex", this.Loader.getSex());
 	}
+	public InsertOpenersData(): Promise<any> {
+		return this.InsertDataForCategory("openers", this.Loader.getOpeners());
+	}
+	public InsertTravelData(): Promise<any> {
+		return this.InsertDataForCategory("viagem", this.Loader.getTravel());
+	}
 	public async InsertDataForCategory(name: string, data: any): Promise<any> {
 		console.info("inserting: ", name);
 		const basicInsert = data.data
@@ -142,6 +148,7 @@ export class DataLayerService {
 		await this.InsertCinemaData();
 		await this.InsertPaulovelhoData();
 		await this.InsertSexData();
+		await this.InsertTravelData();
 		await this.setDataVersion();
 		return true;
 	}
