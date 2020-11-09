@@ -10,6 +10,7 @@ export class Breaker {
 		this.id = data.id;
 		this.category = data.category;
 		this.content = data.content;
+		this.favorite = data.favorite || false;
 		return this;
 	}
 

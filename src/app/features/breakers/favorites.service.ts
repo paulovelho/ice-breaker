@@ -5,39 +5,29 @@ import { DataLayerService } from '@app/services/data-layer.service';
 import { Breaker } from './model';
 
 @Injectable({
-	providedIn: 'root'
+  providedIn: 'root'
 })
-export class BreakersService {
+export class FavoritesService {
 
 	@Output() newBreaker = new EventEmitter<Breaker>();
+	@Output() isActive = new EventEmitter<boolean>();
 
 	constructor(
 		private Service: DataLayerService,
 	) { }
 
-	public LoadItAll(): Promise<any> {
-		return this.Service.InitializeDB();
-	}
-
-	public LoadOne(): void {
-		this.GetBreaker()
-			.then((data: Breaker) => {
-				this.newBreaker.emit(data);
-			});
-	}
-
-	public async GetBreaker(): Promise<Breaker> {
-		await this.LoadItAll();
-		return this.Service.GetRandomBreaker()
+	public GetFavorite(): Promise<Breaker> {
+		return this.Service.GetFavoriteBreaker()
 			.then(data => {
 				console.info("got: ", data);
 				return new Breaker().from({
 					content: data.content,
 					id: data.id,
 					category: data.category,
-					favorite: false,
+					favorite: true,
 				});
 			});
 	}
+
 
 }

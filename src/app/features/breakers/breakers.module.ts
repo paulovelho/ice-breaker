@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BreakerCardComponent } from './components/breaker-card/breaker-card.component';
 import { ViewComponent } from './components/view/view.component';
 import { BreakersService } from './breakers.service';
+import { FavoritesService } from './favorites.service';
 import { routes } from './routes';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { routes } from './routes';
   ],
   providers: [
   	BreakersService,
+  	FavoritesService,
   ],
   exports:[
   	RouterModule

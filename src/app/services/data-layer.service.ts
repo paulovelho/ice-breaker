@@ -40,6 +40,7 @@ export class DataLayerService {
 	public async createTables(): Promise<boolean> {
 		try {
 			await this.createBreakerTable();
+			await this.createFavoritesTable();
 			await this.createCategoriesTable();
 			await this.createSetupTable();
 			return true;
@@ -48,8 +49,13 @@ export class DataLayerService {
 			return false;
 		}
 	}
+	private createFavoritesTable(): Promise<boolean> {
+		const query = 'CREATE TABLE IF NOT EXISTS favorites ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "hash" VARCHAR(32), "content" TEXT, "category" VARCHAR(32))';
+		return this.sqlService.executeSQL(query)
+			.then(data => { return true; });
+	}
 	private createBreakerTable(): Promise<boolean> {
-		const query = 'CREATE TABLE IF NOT EXISTS breakers ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "hash" VARCHAR(32), "content" TEXT, "category" VARCHAR(32), "favorite" TINYINT(1))';
+		const query = 'CREATE TABLE IF NOT EXISTS breakers ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "hash" VARCHAR(32), "content" TEXT, "category" VARCHAR(32))';
 		return this.sqlService.executeSQL(query)
 			.then(data => { return true; });
 	}
@@ -103,14 +109,21 @@ export class DataLayerService {
 	}
 
 	public getInsertQuery(): string {
-		return "INSERT INTO breakers (hash, content, category, favorite) VALUES ";
+		return "INSERT INTO breakers (hash, content, category) VALUES ";
 	}
+	public InsertFavorite(breaker: any): Promise<any> {
+		const query = `INSERT INTO favorites (hash, content, category)
+			VALUES
+			("${breaker.hash}", "${breaker.content}", "${breaker.category}")`;
+		return this.sqlService.executeSQL(query);
+	}
+
 	public async InsertBasicData(): Promise<any> {
 		const basics = this.Loader.getBasics();
 		console.info("basics: ", basics);
 		const basicInsert = basics.data
 			.map(b => {
-				return `("${b.id}", "${b.content}", "basic", 0)`;
+				return `("${b.id}", "${b.content}", "basic")`;
 			});
 		let query = this.getInsertQuery() + basicInsert.join(',');
 		await this.sqlService.executeSQL(query)
@@ -128,11 +141,17 @@ export class DataLayerService {
 
 
 	public GetRandomBreaker(): Promise<any> {
-		const random = Math.random();
 		// const query = `SELECT * FROM breakers 
 		// 	LIMIT 1 
 		// 	OFFSET ABS(${random}) % MAX((SELECT COUNT(*) FROM breakers), 1)`;
 		const query = "SELECT * FROM breakers";
+		return this.sqlService.selectSQL(query)
+			.then(data => {
+				return data[Math.floor(Math.random() * data.length)];
+			});
+	}
+	public GetFavoriteBreaker(): Promise<any> {
+		const query = "SELECT * FROM favorites";
 		return this.sqlService.selectSQL(query)
 			.then(data => {
 				return data[Math.floor(Math.random() * data.length)];
