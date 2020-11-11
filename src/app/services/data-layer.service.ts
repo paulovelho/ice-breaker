@@ -126,16 +126,13 @@ export class DataLayerService {
 		return this.InsertDataForCategory("basics", this.Loader.getBasics());
 	}
 	public InsertCinemaData(): Promise<any> {
-		return this.InsertDataForCategory("cinema", this.Loader.getCinema());
+		return this.InsertDataForCategory("pop", this.Loader.getCinema());
 	}
 	public InsertPaulovelhoData(): Promise<any> {
 		return this.InsertDataForCategory("paulovelho", this.Loader.getPaulovelho());
 	}
 	public InsertSexData(): Promise<any> {
 		return this.InsertDataForCategory("sex", this.Loader.getSex());
-	}
-	public InsertOpenersData(): Promise<any> {
-		return this.InsertDataForCategory("openers", this.Loader.getOpeners());
 	}
 	public InsertTravelData(): Promise<any> {
 		return this.InsertDataForCategory("viagem", this.Loader.getTravel());
@@ -144,7 +141,7 @@ export class DataLayerService {
 		console.info("inserting: ", name);
 		const basicInsert = data.data
 			.map(b => {
-				return `("${b.id}", "${b.content}", "${name}", 0)`;
+				return `("${b.id}", "${b.content}", "${name}")`;
 			});
 		let query = this.getInsertQuery() + basicInsert.join(',');
 		await this.sqlService.executeSQL(query)
@@ -174,7 +171,7 @@ export class DataLayerService {
 			});		
 	}
 
-	public GetRandomBreaker(): Promise<any> {
+	public async GetRandomBreaker(): Promise<any> {
 		// const query = `SELECT * FROM breakers 
 		// 	LIMIT 1 
 		// 	OFFSET ABS(${random}) % MAX((SELECT COUNT(*) FROM breakers), 1)`;

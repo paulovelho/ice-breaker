@@ -32,12 +32,17 @@ export class BreakersService {
 			.then(data => {
 				console.info("got: ", data);
 				return new Breaker().from({
+					hash: data.hash,
 					content: data.content,
 					id: data.id,
 					category: data.category,
 					favorite: false,
 				});
 			});
+	}
+
+	public async InsertFavorite(b: Breaker): Promise<any> {
+		return this.Service.InsertFavorite(b);
 	}
 
 	public async GetAllCategories(): Promise<any> {

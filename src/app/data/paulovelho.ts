@@ -19,5 +19,12 @@ export const data = {
 "Você trocaria perder o controle do seu esfíncter para ter a habilidade de falar com os animais?",
 "Você preferia perder a capacidade de discernir um bebê de um muffin ou trocar de sexo toda vez que espirrasse?",
 "Se você fosse uma batata, como você gostaria de ser comida?",
+"Você preferia voar ou parar o tempo?",
+"Estou indo no mercado. Quer que eu te traga alguma coisa?",
+"Qual super-poder você gostaria de ter?",
+"Você preferia comer um muffin de frango ou uma lasanha de morango?",
+"Qual conselho você daria para você mesmo de 10 anos atrás?",
+"Você prefere um calor de 42° ou um frio de -20°?",
+"Qual membro do Carreta Furacão você gostaria de ser?",
 ]
 }
