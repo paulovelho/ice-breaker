@@ -1,0 +1,59 @@
+<ion-header [translucent]="true">
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-button
+				routerLink="/preferences">
+				<ion-icon
+					slot="icon-only"
+					ios="close-circle-outline"
+					md="close-circle-outline">
+				</ion-icon>
+			</ion-button>
+		</ion-buttons>
+
+		<ion-title>Gotta Ask - Créditos</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+	<br/><br/>
+	<section>
+		<header>Versioning</header>
+		<div class="section-data">
+			Installed Version: {{ version }}<br/>
+			Database Version: {{ db_version }}<br/>
+		</div>
+	</section>
+
+	<section>
+		<header>Platypus Technology</header>
+		<div class="section-data">
+			platypusweb.com.br
+		</div>
+		<div class="section-data-logo">
+			<img src="/assets/platypus.png" alt="Platypus Technology" />
+		</div>
+	</section>
+
+	<section>
+		<header>Development</header>
+		<div class="section-data">
+			<b>Created by:</b> Paulo Velho<br/>
+			<b>Coded in:</b> Q4-2020<br/>
+			Open source development using Ionic 5 + Angular.<br/>
+			Code available at <i>github.com/paulovelho/ice-breaker</i>
+		</div>
+	</section>
+
+	<section>
+		<header>Contact</header>
+		<div class="section-data">
+			<b>Twitter:</b> @paulovelho<br/>
+			<b>E-mail:</b> gottaask@paulovelho.com<br/>
+		</div>
+	</section>
+
+
+</ion-content>
+

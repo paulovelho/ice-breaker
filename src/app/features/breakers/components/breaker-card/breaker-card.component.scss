@@ -1,12 +1,20 @@
 
 ion-card {
 	height: 60vh;
+	width: 80%;
+	margin: auto auto;
+	padding: 50px;
 }
 
 strong {
-  font-size: 20px;
-  line-height: 26px;
+  font-size: 25px;
+  line-height: 30px;
   float: left;
-  margin: auto 20px;
+  margin: auto;
 }
 
+.category {
+	position: absolute;
+	text-transform: uppercase;
+	font-size: 10px;
+}

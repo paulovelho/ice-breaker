@@ -1,4 +1,4 @@
-export const basics = {
+export const data = {
 	version: 1.0,
 	name: "basics",
 	data: [

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { RouteReuseStrategy } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -21,6 +22,7 @@ import { LoaderService } from './services/data/loader.service';
   entryComponents: [],
   imports: [
   	BrowserModule,
+  	FormsModule,
   	IonicModule.forRoot(),
   	AppRoutingModule,
   	HttpClientModule,
