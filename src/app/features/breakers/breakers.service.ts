@@ -40,4 +40,12 @@ export class BreakersService {
 			});
 	}
 
+	public async GetAllCategories(): Promise<any> {
+		await this.LoadItAll();
+		return this.Service.GetCategories()
+			.then(data => {
+				console.info("loaded");
+			});
+	}
+
 }
