@@ -18,7 +18,6 @@ Generation codes are below.
 ### ionic
 Android: `ionic cordova run android --verbose -l -c -s --debug`
 
-
 ### app generation:
 ionic generation
 `ionic cordova build --release android --verbose`

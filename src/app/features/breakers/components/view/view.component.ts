@@ -54,18 +54,10 @@ export class ViewComponent implements OnInit {
 
 	private async reset(): Promise<any> {
 		this.loading = true;
-		let loadingLayer = await this.loadingController.create({
-			message: "Carregando...",
-		});
 		this.front = null;
 		this.back = null;
 		this.viewBack = false;
-		loadingLayer.present();
-		this.start()
-			.then(() => {
-				loadingLayer.dismiss();
-				this.loading = false;
-			});
+		this.start();
 	}
 
 	private firstBreaker(breaker): void {
@@ -75,24 +67,23 @@ export class ViewComponent implements OnInit {
 		this.LoadAnother();
 	}
 
-	private start(): Promise<any> {
-		return new Promise((resolve, reject) => {
-			if(this.favorites) {
-				this.Service.GetFavorite()
-					.then((breaker) => {
-						if(!breaker) this.noFavorite();
-						this.firstBreaker(breaker);
-					})
-					.finally(resolve);
-			} else {
-				this.Service.GetBreaker()
-					.then((breaker) => {
-						if(!breaker) this.noBreaker();
-						this.firstBreaker(breaker);
-					})
-					.finally(resolve);
-			}
-		}); 
+	private async start(): Promise<any> {
+		let loadingLayer = await this.loadingController.create({
+			message: "Carregando...",
+		});
+		loadingLayer.present();
+		let breaker;
+		if(this.favorites) {
+			breaker = await this.Service.GetFavorite();
+			if(!breaker) return this.noFavorite();
+		} else {
+			breaker = await this.Service.GetBreaker();
+			if(!breaker) return this.noBreaker();
+		}
+		this.firstBreaker(breaker);
+		this.loading = false;
+		loadingLayer.dismiss();
+		return true;
 	}
 
 	private watch(): void {
