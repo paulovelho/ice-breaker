@@ -33,7 +33,6 @@ export class ViewComponent implements OnInit {
 	}
 
 	ionViewWillEnter() {
-		console.info("view will enter");
 		this.reset();
 	}
 
