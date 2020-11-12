@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 
 import { Md5 } from 'ts-md5/dist/md5';
 
+import { data as authors } from '@app/data/authors';
 import { data as basics } from '@app/data/basics';
 import { data as cinema } from '@app/data/cinema';
 import { data as paulovelho } from '@app/data/paulovelho';
 import { data as sex } from '@app/data/sex';
-import { data as openers } from '@app/data/openers';
 import { data as travel } from '@app/data/travel';
 
 @Injectable({
@@ -36,6 +36,9 @@ export class LoaderService {
 		}
 	}
 
+	getAuthors(): any {
+		return this.returnData(authors);
+	}
 	getBasics(): any {
 		return this.returnData(basics);
 	}
@@ -48,13 +51,9 @@ export class LoaderService {
 	getSex(): any {
 		return this.returnData(sex);
 	}
-	getOpeners(): any {
-		return this.returnData(openers);
-	}
 	getTravel(): any {
 		return this.returnData(travel);
 	}
-
 
 
 }

@@ -18,7 +18,7 @@
 <ion-content [fullscreen]="true" no-bounce class="no-scroll">
 
 	<div id="container" class="ice-breaker">
-		<div class="flipper" [ngClass]="{'flip': viewBack}">
+		<div class="flipper" [ngClass]="{'flip': viewBack}" *ngIf="!loading">
 			<breaker-card 
 				class="front"
 				[breaker]="front"
@@ -33,9 +33,13 @@
 	</div>
 
 	<div class="fav-actions">
-		<div class="view-favs">
+		<div class="view-favs" (click)="ToggleFavorites()" *ngIf="!favorites">
 			<ion-icon name="star"></ion-icon>
-			Ver Favoritos			
+			Ver Favoritos
+		</div>
+		<div class="view-favs" (click)="ToggleFavorites()" *ngIf="favorites">
+			<ion-icon name="globe"></ion-icon>
+			Ver Todos
 		</div>
 	</div>
 

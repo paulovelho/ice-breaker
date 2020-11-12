@@ -28,6 +28,7 @@ export class DataLayerService {
 			if(!isUpdated) {
 				console.error("data not updated! reseting...");
 				await this.reset();
+				await this.InsertData();	
 			} else {
 				console.info("data is ok!");
 				this.dbLoaded = true;
@@ -96,7 +97,7 @@ export class DataLayerService {
 	public async getDataVersion(): Promise<number> {
 		const query = "SELECT value FROM setup WHERE key = 'version'";
 		const v = await this.sqlService.selectSQL(query);
-		console.info("version: ", v[0].value);
+		console.info("data version: ", v[0].value);
 		return v[0].value;
 	}
 
@@ -137,7 +138,10 @@ export class DataLayerService {
 	public InsertTravelData(): Promise<any> {
 		return this.InsertDataForCategory("viagem", this.Loader.getTravel());
 	}
-	public async InsertDataForCategory(name: string, data: any): Promise<any> {
+	public InsertAuthorData(): Promise<any> {
+		return this.InsertDataForCategory("authors", this.Loader.getAuthors(), false);
+	}
+	public async InsertDataForCategory(name: string, data: any, active: boolean = true): Promise<any> {
 		console.info("inserting: ", name);
 		const basicInsert = data.data
 			.map(b => {
@@ -147,7 +151,7 @@ export class DataLayerService {
 		await this.sqlService.executeSQL(query)
 		query = `INSERT INTO categories (name, version, qtt, active)
 			VALUES
-			("${data.name}", ${data.version}, ${basicInsert.length}, true)`;
+			("${data.name}", ${data.version}, ${basicInsert.length}, ${active})`;
 		await this.sqlService.executeSQL(query)
 		return true;
 	}
@@ -159,6 +163,7 @@ export class DataLayerService {
 		await this.InsertSexData();
 		await this.InsertTravelData();
 		await this.setDataVersion();
+		await this.InsertAuthorData();
 		return true;
 	}
 
@@ -186,8 +191,14 @@ export class DataLayerService {
 		const query = "SELECT * FROM favorites";
 		return this.sqlService.selectSQL(query)
 			.then(data => {
+				console.info("getting one of ", data);
 				return data[Math.floor(Math.random() * data.length)];
 			});
+	}
+
+	public RemoveFavorite(id): Promise<any> {
+		const query = "DELETE FROM favorites WHERE id = "+id;
+		return this.sqlService.executeSQL(query);
 	}
 
 	public GetCategories(): Promise<any> {

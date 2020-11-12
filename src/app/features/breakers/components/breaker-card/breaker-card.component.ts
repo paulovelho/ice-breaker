@@ -28,11 +28,18 @@ export class BreakerCardComponent implements OnInit {
   }
 
   public fav(): void {
-		console.info("setting favorite");
   	this.lock = true;
-  	this.Service.InsertFavorite(this.breaker)
+		this.Service.InsertFavorite(this.breaker)
+			.then(data => {
+				this.breaker.favorite = true;
+				this.lock = false;
+			})
+  }
+  public unfav(): void {
+  	this.lock = true;
+  	this.Service.RemoveFavorite(this.breaker)
   		.then(data => {
-  			this.breaker.favorite = true;
+  			this.breaker.favorite = false;
   			this.lock = false;
   		})
   }
