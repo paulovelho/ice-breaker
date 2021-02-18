@@ -18,8 +18,10 @@ Generation codes are below.
 ### ionic
 Android: `ionic cordova run android --verbose -l -c -s --debug`
 
-
 ### app generation:
+ionic generation
+`ionic cordova build --release android --verbose`
+
 apk generate:
 `jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore platypus.keystore platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk platypus`
 
