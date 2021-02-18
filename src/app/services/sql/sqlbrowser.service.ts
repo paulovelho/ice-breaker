@@ -40,7 +40,7 @@ export class SqlbrowserService implements ISQL {
 					});
 					resolve(data);
 				}, (tr, err) => {
-					console.error("error on execution: ", {
+					console.trace("error on execution: ", {
 						query: query, 
 						error: err,
 					});

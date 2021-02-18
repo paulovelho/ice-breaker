@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  version: 0.1,
-  data_version: 0.12,
+  version: 1.0,
+  data_version: 0.3,
 };
 
 /*

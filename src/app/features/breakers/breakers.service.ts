@@ -26,26 +26,46 @@ export class BreakersService {
 			});
 	}
 
+	public LoadFavorite(): void {
+		this.GetFavorite()
+			.then((data: Breaker) => {
+				this.newBreaker.emit(data);
+			});
+	}
+
+	private BreakerFromData(data, fav: boolean = false): Breaker {
+		if(!data) return null;
+		return new Breaker().from({
+			hash: data.hash,
+			content: data.content,
+			id: data.id,
+			category: data.category,
+			favorite: fav,
+		});		
+	}
+
 	public async GetBreaker(): Promise<Breaker> {
 		await this.LoadItAll();
 		return this.Service.GetRandomBreaker()
-			.then(data => {
-				console.info("got: ", data);
-				return new Breaker().from({
-					content: data.content,
-					id: data.id,
-					category: data.category,
-					favorite: data.favorite,
-				});
-			});
+			.then(data => this.BreakerFromData(data));
+	}
+
+	public async GetFavorite(): Promise<Breaker> {
+		await this.LoadItAll();
+		return this.Service.GetFavoriteBreaker()
+			.then(data => this.BreakerFromData(data, true));
+	}
+
+	public InsertFavorite(b: Breaker): Promise<any> {
+		return this.Service.InsertFavorite(b);
+	}
+	public RemoveFavorite(b: Breaker): Promise<any> {
+		return this.Service.RemoveFavorite(b.id);
 	}
 
 	public async GetAllCategories(): Promise<any> {
 		await this.LoadItAll();
-		return this.Service.GetCategories()
-			.then(data => {
-				console.info("loaded");
-			});
+		return this.Service.GetCategories();
 	}
 
 }

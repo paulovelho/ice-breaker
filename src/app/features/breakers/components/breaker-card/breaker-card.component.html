@@ -4,7 +4,13 @@
 		align-items-center 
 		style="height: 100%"
 		(click)="next()">
-		<span class="category">{{ breaker?.category }}</span>
+		<span class="category" *ngIf="breaker?.category != 'basics'">{{ breaker?.category }}</span>
 		<strong>{{ breaker?.content }}</strong>
+		<div class="actions" *ngIf="!breaker?.favorite">
+			<ion-icon name="star-outline" (click)="fav()"></ion-icon>
+		</div>
+		<div class="actions" *ngIf="breaker?.favorite">
+			<ion-icon name="star" (click)="unfav()"></ion-icon>
+		</div>
 	</ion-row>
 </ion-card>

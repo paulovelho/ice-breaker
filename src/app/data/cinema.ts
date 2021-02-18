@@ -1,6 +1,6 @@
 export const data = {
 	version: 1.0,
-	name: "cinema",
+	name: "pop",
 	data: [
 "Qual o seu filme favorito?",
 "Qual filme é o seu maior guilty pleasure?",
@@ -15,5 +15,6 @@ export const data = {
 "Quem merecia um Oscar que ainda não ganhou?",
 "Qual ator/atriz te faz ir ao cinema?",
 "Qual sua opinião impopular sobre cinema?",
+"Qual foi a última série que você desistiu?",
 ]
 }

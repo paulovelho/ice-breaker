@@ -28,6 +28,7 @@ export class DataLayerService {
 			if(!isUpdated) {
 				console.error("data not updated! reseting...");
 				await this.reset();
+				await this.InsertData();	
 			} else {
 				console.info("data is ok!");
 				this.dbLoaded = true;
@@ -42,6 +43,7 @@ export class DataLayerService {
 	public async createTables(): Promise<boolean> {
 		try {
 			await this.createBreakerTable();
+			await this.createFavoritesTable();
 			await this.createCategoriesTable();
 			await this.createSetupTable();
 			return true;
@@ -50,8 +52,13 @@ export class DataLayerService {
 			return false;
 		}
 	}
+	private createFavoritesTable(): Promise<boolean> {
+		const query = 'CREATE TABLE IF NOT EXISTS favorites ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "hash" VARCHAR(32), "content" TEXT, "category" VARCHAR(32))';
+		return this.sqlService.executeSQL(query)
+			.then(data => { return true; });
+	}
 	private createBreakerTable(): Promise<boolean> {
-		const query = 'CREATE TABLE IF NOT EXISTS breakers ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "hash" VARCHAR(32), "content" TEXT, "category" VARCHAR(32), "favorite" TINYINT(1))';
+		const query = 'CREATE TABLE IF NOT EXISTS breakers ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "hash" VARCHAR(32), "content" TEXT, "category" VARCHAR(32))';
 		return this.sqlService.executeSQL(query)
 			.then(data => { return true; });
 	}
@@ -90,7 +97,7 @@ export class DataLayerService {
 	public async getDataVersion(): Promise<number> {
 		const query = "SELECT value FROM setup WHERE key = 'version'";
 		const v = await this.sqlService.selectSQL(query);
-		console.info("version: ", v[0].value);
+		console.info("data version: ", v[0].value);
 		return v[0].value;
 	}
 
@@ -107,14 +114,20 @@ export class DataLayerService {
 	}
 
 	public getInsertQuery(): string {
-		return "INSERT INTO breakers (hash, content, category, favorite) VALUES ";
+		return "INSERT INTO breakers (hash, content, category) VALUES ";
+	}
+	public InsertFavorite(breaker: any): Promise<any> {
+		const query = `INSERT INTO favorites (hash, content, category)
+			VALUES
+			("${breaker.hash}", "${breaker.content}", "${breaker.category}")`;
+		return this.sqlService.executeSQL(query);
 	}
 
 	public InsertBasicData(): Promise<any> {
 		return this.InsertDataForCategory("basics", this.Loader.getBasics());
 	}
 	public InsertCinemaData(): Promise<any> {
-		return this.InsertDataForCategory("cinema", this.Loader.getCinema());
+		return this.InsertDataForCategory("pop", this.Loader.getCinema());
 	}
 	public InsertPaulovelhoData(): Promise<any> {
 		return this.InsertDataForCategory("paulovelho", this.Loader.getPaulovelho());
@@ -122,23 +135,23 @@ export class DataLayerService {
 	public InsertSexData(): Promise<any> {
 		return this.InsertDataForCategory("sex", this.Loader.getSex());
 	}
-	public InsertOpenersData(): Promise<any> {
-		return this.InsertDataForCategory("openers", this.Loader.getOpeners());
-	}
 	public InsertTravelData(): Promise<any> {
 		return this.InsertDataForCategory("viagem", this.Loader.getTravel());
 	}
-	public async InsertDataForCategory(name: string, data: any): Promise<any> {
+	public InsertAuthorData(): Promise<any> {
+		return this.InsertDataForCategory("authors", this.Loader.getAuthors(), false);
+	}
+	public async InsertDataForCategory(name: string, data: any, active: boolean = true): Promise<any> {
 		console.info("inserting: ", name);
 		const basicInsert = data.data
 			.map(b => {
-				return `("${b.id}", "${b.content}", "${name}", 0)`;
+				return `("${b.id}", "${b.content}", "${name}")`;
 			});
 		let query = this.getInsertQuery() + basicInsert.join(',');
 		await this.sqlService.executeSQL(query)
 		query = `INSERT INTO categories (name, version, qtt, active)
 			VALUES
-			("${data.name}", ${data.version}, ${basicInsert.length}, true)`;
+			("${data.name}", ${data.version}, ${basicInsert.length}, ${active})`;
 		await this.sqlService.executeSQL(query)
 		return true;
 	}
@@ -150,6 +163,7 @@ export class DataLayerService {
 		await this.InsertSexData();
 		await this.InsertTravelData();
 		await this.setDataVersion();
+		await this.InsertAuthorData();
 		return true;
 	}
 
@@ -163,7 +177,6 @@ export class DataLayerService {
 	}
 
 	public async GetRandomBreaker(): Promise<any> {
-		const random = Math.random();
 		// const query = `SELECT * FROM breakers 
 		// 	LIMIT 1 
 		// 	OFFSET ABS(${random}) % MAX((SELECT COUNT(*) FROM breakers), 1)`;
@@ -173,6 +186,19 @@ export class DataLayerService {
 			.then(data => {
 				return data[Math.floor(Math.random() * data.length)];
 			});
+	}
+	public GetFavoriteBreaker(): Promise<any> {
+		const query = "SELECT * FROM favorites";
+		return this.sqlService.selectSQL(query)
+			.then(data => {
+				console.info("getting one of ", data);
+				return data[Math.floor(Math.random() * data.length)];
+			});
+	}
+
+	public RemoveFavorite(id): Promise<any> {
+		const query = "DELETE FROM favorites WHERE id = "+id;
+		return this.sqlService.executeSQL(query);
 	}
 
 	public GetCategories(): Promise<any> {
