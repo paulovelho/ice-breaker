@@ -32,6 +32,7 @@ export class LoaderService {
 		return {
 			version: data.version,
 			name: category,
+			title: data.title,
 			data: list,
 		}
 	}

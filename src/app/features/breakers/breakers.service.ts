@@ -23,6 +23,9 @@ export class BreakersService {
 		this.GetBreaker()
 			.then((data: Breaker) => {
 				this.newBreaker.emit(data);
+			})
+			.catch(err => {
+				console.error(err);
 			});
 	}
 
@@ -30,6 +33,9 @@ export class BreakersService {
 		this.GetFavorite()
 			.then((data: Breaker) => {
 				this.newBreaker.emit(data);
+			})
+			.catch(err => {
+				console.error(err);
 			});
 	}
 
