@@ -12,6 +12,7 @@ export class BreakerCardComponent implements OnInit {
 
 	@Input() breaker: Breaker = null;
 	@Output() nextClick = new EventEmitter<any>();
+	public longContent = false;
 
 	private lock: boolean = false;
 
@@ -19,7 +20,9 @@ export class BreakerCardComponent implements OnInit {
 		private Service: BreakersService,
 	) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  	console.info("init ", this.breaker);
+  }
 
   public next(): void {
   	if(this.lock) return;

@@ -30,6 +30,7 @@ export class SqlbrowserService implements ISQL {
 	}
 
 	public executeSQL(query: string): Promise<any> {
+//		console.info("executing ", query);
 		return new Promise((resolve, reject) => {
 			this.getDb().then(db => {
 				db.executeSql(query, [], (tr, data) => {

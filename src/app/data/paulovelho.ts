@@ -1,6 +1,7 @@
 export const data = {
 	version: 1.0,
 	name: "paulovelho",
+	title: "Grandes Questões da Humanidade",
 	data: [
 "Se você pudesse ser um legume, qual legume você seria?",
 "Se você pudesse ser uma fruta, qual fruta você seria?",

@@ -1,6 +1,7 @@
 export const data = {
 	version: 1.0,
 	name: "authors",
+	title: "Círculo de autores",
 	data: [
 "Já criou um personagem baseado em um crush? O que aconteceu com o personagem?",
 "Já teve uma ideia muito boa, mas abandonou porque ia ser complicado demais desenvolver?",

@@ -5,7 +5,7 @@
 		style="height: 100%"
 		(click)="next()">
 		<span class="category" *ngIf="breaker?.category != 'basics'">{{ breaker?.category }}</span>
-		<strong>{{ breaker?.content }}</strong>
+		<strong [class.shrink]="(breaker?.content.length > 120)">{{ breaker?.content }}</strong>
 		<div class="actions" *ngIf="!breaker?.favorite">
 			<ion-icon name="star-outline" (click)="fav()"></ion-icon>
 		</div>

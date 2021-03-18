@@ -35,6 +35,10 @@ export class PreferencesComponent implements OnInit {
 					return d;
 				});
 //				console.info("got categories: ", this.categories);
+			})
+			.catch(err => {
+				console.error(err);
+				if(this.loading) this.loading.dismiss();
 			});
 	};
 	
@@ -59,8 +63,13 @@ export class PreferencesComponent implements OnInit {
 			this.showLoading();
 			this.Service.reset()
 				.then(data => {
+					this.categories = [];
 					if(this.loading)
 						this.loading.dismiss();
+				})
+				.catch(err => {
+					console.error(err);
+					if(this.loading) this.loading.dismiss();
 				});
 		}
 	}

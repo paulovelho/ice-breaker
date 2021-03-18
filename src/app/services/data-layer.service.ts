@@ -34,6 +34,7 @@ export class DataLayerService {
 				this.dbLoaded = true;
 			}
 		} catch (err) {
+			console.error(err);
 			await this.reset();
 			await this.InsertData();
 		}
@@ -63,7 +64,7 @@ export class DataLayerService {
 			.then(data => { return true; });
 	}
 	private createCategoriesTable(): Promise<boolean> {
-		const query = 'CREATE TABLE IF NOT EXISTS categories ("name" VARCHAR(32), "version" FLOAT, "qtt" INTEGER, active TINYINT(1))';
+		const query = 'CREATE TABLE IF NOT EXISTS categories ("name" VARCHAR(32), "title" VARCHAR(100), "version" FLOAT, "qtt" INTEGER, active TINYINT(1))';
 		return this.sqlService.executeSQL(query)
 			.then(data => { return true; });
 	}
@@ -149,9 +150,9 @@ export class DataLayerService {
 			});
 		let query = this.getInsertQuery() + basicInsert.join(',');
 		await this.sqlService.executeSQL(query)
-		query = `INSERT INTO categories (name, version, qtt, active)
+		query = `INSERT INTO categories (name, title, version, qtt, active)
 			VALUES
-			("${data.name}", ${data.version}, ${basicInsert.length}, ${active})`;
+			("${data.name}", "${data.title}", ${data.version}, ${basicInsert.length}, ${active})`;
 		await this.sqlService.executeSQL(query)
 		return true;
 	}
