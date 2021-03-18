@@ -17,5 +17,7 @@ export const data = {
 "Qual ator/atriz te faz ir ao cinema?",
 "Qual sua opinião impopular sobre cinema?",
 "Qual foi a última série que você desistiu?",
+"Qual filme que você odeia e todo mundo ama?",
+"Qual série que você odeia e todo mundo ama?",
 ]
 }
