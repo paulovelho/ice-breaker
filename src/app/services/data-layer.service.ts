@@ -134,13 +134,16 @@ export class DataLayerService {
 		return this.InsertDataForCategory("paulovelho", this.Loader.getPaulovelho());
 	}
 	public InsertSexData(): Promise<any> {
-		return this.InsertDataForCategory("sex", this.Loader.getSex());
+		return this.InsertDataForCategory("sex", this.Loader.getSex(), false);
 	}
 	public InsertTravelData(): Promise<any> {
 		return this.InsertDataForCategory("viagem", this.Loader.getTravel());
 	}
 	public InsertAuthorData(): Promise<any> {
 		return this.InsertDataForCategory("authors", this.Loader.getAuthors(), false);
+	}
+	public InsertWouldYouData(): Promise<any> {
+		return this.InsertDataForCategory("would-you", this.Loader.getWouldYou());
 	}
 	public async InsertDataForCategory(name: string, data: any, active: boolean = true): Promise<any> {
 		console.info("inserting: ", name);
@@ -165,6 +168,7 @@ export class DataLayerService {
 		await this.InsertTravelData();
 		await this.setDataVersion();
 		await this.InsertAuthorData();
+		await this.InsertWouldYouData();
 		return true;
 	}
 
