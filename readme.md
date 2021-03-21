@@ -27,3 +27,10 @@ apk generate:
 
 sign:
 `zipalign -v 4 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk ./GottaAsk.apk`
+
+#### trobleshooting:
+- set `ANDROID_SDK_ROOT`, like:
+```
+export ANDROID_HOME=$HOME/Android/Sdk
+export ANDROID_SDK_ROOT=$HOME/Android/Sdk
+```
