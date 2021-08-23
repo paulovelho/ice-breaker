@@ -27,3 +27,18 @@ apk generate:
 
 sign:
 `zipalign -v 4 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk ./GottaAsk.apk`
+
+#### trobleshooting:
+- not compiling for Android:
+you might have to go on `tsconfig.json` file and change the attribute `target`
+```
+    "target": "es2015", // try swapping this...
+    "target": "es5", // ...for this
+```
+
+
+- set `ANDROID_SDK_ROOT`, like:
+```
+export ANDROID_HOME=$HOME/Android/Sdk
+export ANDROID_SDK_ROOT=$HOME/Android/Sdk
+```
