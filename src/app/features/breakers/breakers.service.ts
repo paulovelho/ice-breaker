@@ -10,13 +10,19 @@ import { Breaker } from './model';
 export class BreakersService {
 
 	@Output() newBreaker = new EventEmitter<Breaker>();
+	private loading: boolean = false;
+	private initPromise: Promise<any> = null;
 
 	constructor(
 		private Service: DataLayerService,
 	) { }
 
-	public LoadItAll(): Promise<any> {
-		return this.Service.InitializeDB();
+	public async LoadItAll(): Promise<any> {
+		console.info('loading all');
+		if(this.initPromise) return this.initPromise;
+		this.initPromise = this.Service.InitializeDB();
+		console.info('returning promise');
+		return this.initPromise;
 	}
 
 	public LoadOne(): void {
@@ -52,12 +58,20 @@ export class BreakersService {
 
 	public async GetBreaker(): Promise<Breaker> {
 		await this.LoadItAll();
+		console.info('get breaker  ok');
 		return this.Service.GetRandomBreaker()
-			.then(data => this.BreakerFromData(data));
+			.then(data => {
+				if(data == null) {
+					return null;
+				} else {
+					return this.BreakerFromData(data)
+				}
+			});
 	}
 
 	public async GetFavorite(): Promise<Breaker> {
 		await this.LoadItAll();
+		console.info('get favorite ok');
 		return this.Service.GetFavoriteBreaker()
 			.then(data => this.BreakerFromData(data, true));
 	}
@@ -71,6 +85,7 @@ export class BreakersService {
 
 	public async GetAllCategories(): Promise<any> {
 		await this.LoadItAll();
+		console.info('get categories ok');
 		return this.Service.GetCategories();
 	}
 

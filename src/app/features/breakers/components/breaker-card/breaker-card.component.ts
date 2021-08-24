@@ -21,12 +21,10 @@ export class BreakerCardComponent implements OnInit {
 	) { }
 
   ngOnInit() {
-  	console.info("init ", this.breaker);
   }
 
   public next(): void {
   	if(this.lock) return;
-		console.info("next");
 		this.nextClick.emit(true);  	
   }
 
