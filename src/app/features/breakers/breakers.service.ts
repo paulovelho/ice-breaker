@@ -1,6 +1,8 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 
 import { DataLayerService } from '@app/services/data-layer.service';
+import { CategoriesService } from '@app/services/categories.service';
+
 
 import { Breaker } from './model';
 
@@ -15,6 +17,7 @@ export class BreakersService {
 
 	constructor(
 		private Service: DataLayerService,
+    private Categories: CategoriesService,
 	) { }
 
 	public async LoadItAll(): Promise<any> {
@@ -52,26 +55,21 @@ export class BreakersService {
 			content: data.content,
 			id: data.id,
 			category: data.category,
+			categoryName: data.categoryName,
 			favorite: fav,
 		});		
 	}
 
 	public async GetBreaker(): Promise<Breaker> {
 		await this.LoadItAll();
-		console.info('get breaker  ok');
-		return this.Service.GetRandomBreaker()
-			.then(data => {
-				if(data == null) {
-					return null;
-				} else {
-					return this.BreakerFromData(data)
-				}
-			});
+		let data = await this.Service.GetRandomBreaker();
+		if(data == null) return null;
+		data.categoryName = await this.Categories.getCategoryName(data.category);
+		return this.BreakerFromData(data);
 	}
 
 	public async GetFavorite(): Promise<Breaker> {
 		await this.LoadItAll();
-		console.info('get favorite ok');
 		return this.Service.GetFavoriteBreaker()
 			.then(data => this.BreakerFromData(data, true));
 	}
@@ -85,7 +83,6 @@ export class BreakersService {
 
 	public async GetAllCategories(): Promise<any> {
 		await this.LoadItAll();
-		console.info('get categories ok');
 		return this.Service.GetCategories();
 	}
 

@@ -13,6 +13,7 @@ export class BreakerCardComponent implements OnInit {
 	@Input() breaker: Breaker = null;
 	@Output() nextClick = new EventEmitter<any>();
 	public longContent = false;
+  public categoryName: string = "...";
 
 	private lock: boolean = false;
 
@@ -21,6 +22,10 @@ export class BreakerCardComponent implements OnInit {
 	) { }
 
   ngOnInit() {
+  }
+
+  public longPress(): void {
+    console.info('long press!');
   }
 
   public next(): void {
