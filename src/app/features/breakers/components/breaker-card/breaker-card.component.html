@@ -1,10 +1,13 @@
 <ion-card>
+	<span class="copied" [ngClass]="{ 'visible': showCopied }">copiado!</span>
 	<ion-row 
 		justify-content-center 
 		align-items-center 
 		style="height: 100%"
-		(click)="next()">
-		<span class="category" *ngIf="breaker?.category != 'basics'">{{ breaker?.category }}</span>
+		(click)="next()"
+		long-press
+		(press)="longPress()">
+		<span class="category" *ngIf="breaker?.category != 'basics'">{{ breaker?.categoryName }}</span>
 		<strong [class.shrink]="(breaker?.content.length > 120)">{{ breaker?.content }}</strong>
 		<div class="actions" *ngIf="!breaker?.favorite">
 			<ion-icon name="star-outline" (click)="fav()"></ion-icon>

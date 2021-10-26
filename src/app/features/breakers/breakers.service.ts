@@ -1,6 +1,8 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 
 import { DataLayerService } from '@app/services/data-layer.service';
+import { CategoriesService } from '@app/services/categories.service';
+
 
 import { Breaker } from './model';
 
@@ -10,13 +12,20 @@ import { Breaker } from './model';
 export class BreakersService {
 
 	@Output() newBreaker = new EventEmitter<Breaker>();
+	private loading: boolean = false;
+	private initPromise: Promise<any> = null;
 
 	constructor(
 		private Service: DataLayerService,
+    private Categories: CategoriesService,
 	) { }
 
-	public LoadItAll(): Promise<any> {
-		return this.Service.InitializeDB();
+	public async LoadItAll(): Promise<any> {
+		console.info('loading all');
+		if(this.initPromise) return this.initPromise;
+		this.initPromise = this.Service.InitializeDB();
+		console.info('returning promise');
+		return this.initPromise;
 	}
 
 	public LoadOne(): void {
@@ -46,14 +55,17 @@ export class BreakersService {
 			content: data.content,
 			id: data.id,
 			category: data.category,
+			categoryName: data.categoryName,
 			favorite: fav,
 		});		
 	}
 
 	public async GetBreaker(): Promise<Breaker> {
 		await this.LoadItAll();
-		return this.Service.GetRandomBreaker()
-			.then(data => this.BreakerFromData(data));
+		let data = await this.Service.GetRandomBreaker();
+		if(data == null) return null;
+		data.categoryName = await this.Categories.getCategoryName(data.category);
+		return this.BreakerFromData(data);
 	}
 
 	public async GetFavorite(): Promise<Breaker> {

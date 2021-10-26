@@ -27,6 +27,7 @@ apk generate:
 
 sign:
 `zipalign -v 4 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk ./GottaAsk.apk`
+if zipalign is not there (mac), you can find it with `find ~/Library/Android/sdk/build-tools -name "zipalign"`
 
 #### trobleshooting:
 - not compiling for Android:

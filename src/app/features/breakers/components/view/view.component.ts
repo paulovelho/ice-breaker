@@ -63,7 +63,6 @@ export class ViewComponent implements OnInit {
 	private firstBreaker(breaker): void {
 		this.front = breaker;
 		this.lock = false;
-		console.info("loaded", breaker);
 		this.LoadAnother();
 	}
 
