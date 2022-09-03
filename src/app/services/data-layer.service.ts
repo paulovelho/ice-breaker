@@ -153,8 +153,9 @@ export class DataLayerService {
 		return this.InsertDataForCategory("would-you", this.Loader.getWouldYou());
 	}
 
-	public InsertRotulosData(): Promise<any> {
-		return this.InsertDataForCategory("rotulos", this.Loader.getRotulos(), true);
+	public async InsertRotulosData(): Promise<any> {
+		await this.InsertDataForCategory("rotulos", this.Loader.getRotulos(), true);
+		await this.InsertDataForCategory("rotulos-sn", this.Loader.getRotulosSN(), true);
 	}
 
 	public async InsertDataForCategory(name: string, data: any, active: boolean = true): Promise<any> {
@@ -173,7 +174,8 @@ export class DataLayerService {
 	}
 
 	public async InsertData(): Promise<any> {
-		return this.InsertRotulosData();
+		await this.InsertRotulosData();
+		return true;
 		await this.InsertBasicData();
 		await this.InsertCinemaData();
 		await this.InsertPaulovelhoData();

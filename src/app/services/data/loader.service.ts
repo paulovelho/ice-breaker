@@ -11,6 +11,7 @@ import { data as travel } from '@app/data/travel';
 import { data as wouldyou } from '@app/data/would-you';
 
 import { data as rotulos } from '@app/data/rotulos';
+import { data as rotulosSN } from '@app/data/rotulos-sn';
 
 @Injectable({
 	providedIn: 'root'
@@ -64,6 +65,9 @@ export class LoaderService {
 
 	getRotulos(): any {
 		return this.returnData(rotulos);
+	}
+	getRotulosSN(): any {
+		return this.returnData(rotulosSN);
 	}
 
 
