@@ -142,6 +142,9 @@ export class DataLayerService {
 	public InsertAuthorData(): Promise<any> {
 		return this.InsertDataForCategory("authors", this.Loader.getAuthors(), false);
 	}
+	public InsertRotulosData(): Promise<any> {
+		return this.InsertDataForCategory("rotulos", this.Loader.getRotulos(), true);
+	}
 	public async InsertDataForCategory(name: string, data: any, active: boolean = true): Promise<any> {
 		console.info("inserting: ", name);
 		const basicInsert = data.data
@@ -158,6 +161,7 @@ export class DataLayerService {
 	}
 
 	public async InsertData(): Promise<any> {
+		return this.InsertRotulosData();
 		await this.InsertBasicData();
 		await this.InsertCinemaData();
 		await this.InsertPaulovelhoData();

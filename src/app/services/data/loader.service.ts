@@ -9,6 +9,8 @@ import { data as paulovelho } from '@app/data/paulovelho';
 import { data as sex } from '@app/data/sex';
 import { data as travel } from '@app/data/travel';
 
+import { data as rotulos } from '@app/data/rotulos';
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -54,6 +56,9 @@ export class LoaderService {
 	}
 	getTravel(): any {
 		return this.returnData(travel);
+	}
+	getRotulos(): any {
+		return this.returnData(rotulos);
 	}
 
 
