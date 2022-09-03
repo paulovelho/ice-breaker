@@ -8,6 +8,7 @@ import { data as cinema } from '@app/data/cinema';
 import { data as paulovelho } from '@app/data/paulovelho';
 import { data as sex } from '@app/data/sex';
 import { data as travel } from '@app/data/travel';
+import { data as wouldyou } from '@app/data/would-you';
 
 import { data as rotulos } from '@app/data/rotulos';
 
@@ -57,6 +58,10 @@ export class LoaderService {
 	getTravel(): any {
 		return this.returnData(travel);
 	}
+	getWouldYou(): any {
+		return this.returnData(wouldyou);
+	}
+
 	getRotulos(): any {
 		return this.returnData(rotulos);
 	}

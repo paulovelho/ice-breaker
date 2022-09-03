@@ -13,6 +13,7 @@ import { environment } from '../../environments/environment';
 export class DataLayerService {
 
 	public dbLoaded: boolean = false;
+	private retriesCategory: number = 0;
 
 	constructor(
 		private Http: HttpClient,
@@ -34,14 +35,16 @@ export class DataLayerService {
 				this.dbLoaded = true;
 			}
 		} catch (err) {
-			console.error(err);
+			console.error('error initializing db:', err);
 			await this.reset();
 			await this.InsertData();
+			this.dbLoaded = true;
 		}
 		return true;
 	}
 
 	public async createTables(): Promise<boolean> {
+		console.info('creating tables');
 		try {
 			await this.createBreakerTable();
 			await this.createFavoritesTable();
@@ -54,21 +57,25 @@ export class DataLayerService {
 		}
 	}
 	private createFavoritesTable(): Promise<boolean> {
+		console.info('creating favorites table');
 		const query = 'CREATE TABLE IF NOT EXISTS favorites ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "hash" VARCHAR(32), "content" TEXT, "category" VARCHAR(32))';
 		return this.sqlService.executeSQL(query)
 			.then(data => { return true; });
 	}
 	private createBreakerTable(): Promise<boolean> {
+		console.info('creating breakers table');
 		const query = 'CREATE TABLE IF NOT EXISTS breakers ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "hash" VARCHAR(32), "content" TEXT, "category" VARCHAR(32))';
 		return this.sqlService.executeSQL(query)
 			.then(data => { return true; });
 	}
 	private createCategoriesTable(): Promise<boolean> {
+		console.info('creating categories table');
 		const query = 'CREATE TABLE IF NOT EXISTS categories ("name" VARCHAR(32), "title" VARCHAR(100), "version" FLOAT, "qtt" INTEGER, active TINYINT(1))';
 		return this.sqlService.executeSQL(query)
 			.then(data => { return true; });
 	}
 	private createSetupTable(): Promise<boolean> {
+		console.info('create setups table');
 		const query = 'CREATE TABLE IF NOT EXISTS setup ("key" VARCHAR(32), "value" VARCHAR(32))';
 		return this.sqlService.executeSQL(query)
 			.then(data => { return true; });
@@ -134,7 +141,7 @@ export class DataLayerService {
 		return this.InsertDataForCategory("paulovelho", this.Loader.getPaulovelho());
 	}
 	public InsertSexData(): Promise<any> {
-		return this.InsertDataForCategory("sex", this.Loader.getSex());
+		return this.InsertDataForCategory("sex", this.Loader.getSex(), false);
 	}
 	public InsertTravelData(): Promise<any> {
 		return this.InsertDataForCategory("viagem", this.Loader.getTravel());
@@ -142,9 +149,14 @@ export class DataLayerService {
 	public InsertAuthorData(): Promise<any> {
 		return this.InsertDataForCategory("authors", this.Loader.getAuthors(), false);
 	}
+	public InsertWouldYouData(): Promise<any> {
+		return this.InsertDataForCategory("would-you", this.Loader.getWouldYou());
+	}
+
 	public InsertRotulosData(): Promise<any> {
 		return this.InsertDataForCategory("rotulos", this.Loader.getRotulos(), true);
 	}
+
 	public async InsertDataForCategory(name: string, data: any, active: boolean = true): Promise<any> {
 		console.info("inserting: ", name);
 		const basicInsert = data.data
@@ -169,16 +181,29 @@ export class DataLayerService {
 		await this.InsertTravelData();
 		await this.setDataVersion();
 		await this.InsertAuthorData();
+		await this.InsertWouldYouData();
 		return true;
 	}
 
-	public GetValidCategories(): Promise<Array<string>> {
-		const query = "SELECT name FROM categories WHERE active = 1";
-		return this.sqlService.selectSQL(query)
-			.then(data => {
-				let categories: Array<any> = Object.values(data);
-				return categories.map(c => c["name"]);
-			});		
+	public async GetValidCategories(): Promise<Array<string>> {
+		const query = "SELECT name, title FROM categories WHERE active = 1";
+		try {
+			const data = await this.sqlService.selectSQL(query);
+			let categories: Array<any> = Object.values(data);
+			this.retriesCategory = 0;
+			return categories.map(c => c["name"]);
+		} catch(err) {
+			console.error('get categories err:', err);
+			if(err.code == 5) {
+				await this.createTables();
+				await this.InsertData();
+				this.retriesCategory ++;
+				if(this.retriesCategory > 3) return [];
+				else return this.GetValidCategories();
+			} else {
+				return [];
+			}
+		}
 	}
 
 	public async GetRandomBreaker(): Promise<any> {
@@ -186,6 +211,7 @@ export class DataLayerService {
 		// 	LIMIT 1 
 		// 	OFFSET ABS(${random}) % MAX((SELECT COUNT(*) FROM breakers), 1)`;
 		const cats = await this.GetValidCategories();
+		if(cats.length == 0) return null;
 		const query = `SELECT * FROM breakers WHERE category IN ( "${cats.join('", "')}" )`;
 		return this.sqlService.selectSQL(query)
 			.then(data => {

@@ -12,8 +12,13 @@ export class SqlbrowserService implements ISQL {
 
 	constructor() { }
 
+	private debug(message: string, data?: any) {
+		return;
+		console.info(message, data);
+	}
+
 	public Initialize(): Promise<boolean> {
-		console.info("using sql browser service");
+		this.debug("using sql browser service");
 		return new Promise((resolve, reject) => {
 			resolve(true);
 		});
@@ -34,14 +39,14 @@ export class SqlbrowserService implements ISQL {
 		return new Promise((resolve, reject) => {
 			this.getDb().then(db => {
 				db.executeSql(query, [], (tr, data) => {
-					console.info("query executed: ", {
+					this.debug("query executed: ", {
 						query: query,
 						tr: tr,
 						data: data,
 					});
 					resolve(data);
 				}, (tr, err) => {
-					console.trace("error on execution: ", {
+					console.error("error on execution: ", {
 						query: query, 
 						error: err,
 					});

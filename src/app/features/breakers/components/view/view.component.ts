@@ -40,7 +40,7 @@ export class ViewComponent implements OnInit {
 		let alert = await this.alertController.create({
 			message: "Nenhum Favorito Encontrado",
 			buttons: ['OK'],
-		})
+		});
 		return alert.present();
 	}
 
@@ -63,7 +63,6 @@ export class ViewComponent implements OnInit {
 	private firstBreaker(breaker): void {
 		this.front = breaker;
 		this.lock = false;
-		console.info("loaded", breaker);
 		this.LoadAnother();
 	}
 
@@ -75,10 +74,18 @@ export class ViewComponent implements OnInit {
 		let breaker;
 		if(this.favorites) {
 			breaker = await this.Service.GetFavorite();
-			if(!breaker) return this.noFavorite();
+			if(!breaker) {
+				this.loading = false;
+				loadingLayer.dismiss();
+				return this.noFavorite();
+			}
 		} else {
 			breaker = await this.Service.GetBreaker();
-			if(!breaker) return this.noBreaker();
+			if(!breaker) {
+				this.loading = false;
+				loadingLayer.dismiss();
+				return this.noBreaker();
+			}
 		}
 		this.firstBreaker(breaker);
 		this.loading = false;
