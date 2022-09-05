@@ -10,10 +10,10 @@
 		<span class="category" *ngIf="breaker?.category != 'basics'">{{ breaker?.categoryName }}</span>
 		<strong [class.shrink]="(breaker?.content.length > 120)">{{ breaker?.content }}</strong>
 		<div class="actions" *ngIf="!breaker?.favorite">
-			<ion-icon name="star-outline" (click)="fav()"></ion-icon>
+			<!--ion-icon name="star-outline" (click)="fav()"></ion-icon-->
 		</div>
 		<div class="actions" *ngIf="breaker?.favorite">
-			<ion-icon name="star" (click)="unfav()"></ion-icon>
+			<!--ion-icon name="star" (click)="unfav()"></ion-icon-->
 		</div>
 	</ion-row>
 </ion-card>

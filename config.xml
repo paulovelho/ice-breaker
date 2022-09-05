@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="app.platypus.gottaask" version="1.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Gotta Ask</name>
-    <description>Nunca mais vai faltar assunto</description>
+<widget id="app.platypus.rotulos" version="1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Rótulos</name>
+    <description>Um projeto Varanda Gourmet</description>
     <author email="paulovelho@paulovelho.com" href="http://platypusweb.com.br/">Platypus Technology</author>
     <content src="index.html" />
     <access origin="*" />

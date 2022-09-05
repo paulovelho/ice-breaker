@@ -17,6 +17,7 @@ Generation codes are below.
 
 ### ionic
 Android: `ionic cordova run android --verbose -l -c -s --debug`
+debug with: `chrome://inspect/#devices`
 
 ### app generation:
 ionic generation
@@ -26,7 +27,7 @@ apk generate:
 `jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore platypus.keystore platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk platypus`
 
 sign:
-`zipalign -v 4 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk ./GottaAsk.apk`
+`zipalign -v 4 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk ./Rotulos.apk`
 if zipalign is not there (mac), you can find it with `find ~/Library/Android/sdk/build-tools -name "zipalign"`
 
 #### trobleshooting:
@@ -43,3 +44,4 @@ you might have to go on `tsconfig.json` file and change the attribute `target`
 export ANDROID_HOME=$HOME/Android/Sdk
 export ANDROID_SDK_ROOT=$HOME/Android/Sdk
 ```
+
